@@ -9,28 +9,37 @@ db = SQLAlchemy(app)
 
 
 class Todo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100))
+    id = db.Column(db.Integer, primary_key=True)          #print this
+    task = db.Column(db.String(100))                      #print this
     complete = db.Column(db.Boolean)
+    tasks = db.relationship('Name', backref="Todo")
+    def __repr__(self):
+        return f"Todo('{self.id}', '{self.task}')"
 
-#class Name(db.Model):
-#    id = db.Column(db.Integer, primary_key=True, nullable=False)
-#    persons = db.Column(db.String(15))
-#    todos = db.relationship('Todo', backref='Name')
-#establish a relationship between this table and Todo one
+class Name(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    todo_id = db.Column(db.Integer, db.ForeignKey('todo.id'))
+    persons = db.Column(db.String(15))
+    def __repr__(self):
+        return f"Name('{self.persons}')"
 
 @app.route("/")
 def home():
     todo_list = Todo.query.all()
-    return render_template("home.html", todo_list=todo_list)
+    new_person = Name.query.all()
+    return render_template("home.html", todo_list=todo_list, new_person=new_person)
 
 
-@app.route("/add", methods=["POST"])
+@app.route("/add", methods=["POST", "GET"])
 def add():
-    title = request.form.get("title")
-    new_todo = Todo(title=title, complete=False)
+    task = request.form.get("task")   #maybe change title to task?
+    new_todo = Todo(task=task, complete=False)
+    persons = request.form.get("persons")
+    new_person = Name(persons=persons)
     db.session.add(new_todo)
+    db.session.add(new_person)
     db.session.commit()
+
     return redirect(url_for("home"))
 
 
