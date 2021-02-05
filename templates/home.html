@@ -3,29 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
-
 </head>
 <body>
-    <h1>Family ToDo App</h1>
+<h1>Family ToDo App</h1>
 
     <form action="/add" method="POST">
         <div>
-            <label for="task">What do you want to do?</label>
+            <label for="new_task">What do you want to do?</label>
             <input type="text" name="task" placeholder="Insert Task Todo...">
             <br>
             <form action="/add" method="POST">
-            <label for="persons">Who do you want to do it?</label>
-             <input type="text" name="persons" placeholder="Enter name">
+            <label for="new_person">Who do you want to do it?</label>
+             <input type="text" name="new_person" placeholder="Enter name">
             <br>
-            <button type="submit">Add</button>
-                 </form>
+            <button type="submit">Add Your TODO and TO-DOER!</button>
+   </form>
         </div>
-    </form>
-
+   </form>
         <hr>
 
-    {% for todo in todo_list %}
-            <p> {{ todo.id }} - {{ todo.task }} | due by: {{ new_person.person }} </p>
+        {%  for todo in todo_list%}
+            <p> {{ todo.id }} - {{ todo.task }} | due by: {{ name_list }}</p>
             {% if todo.complete == False %}
                 <span>Not Completed</span>
             {% else %}
@@ -34,7 +32,9 @@
 
             <a href="/update/{{ todo.id }}">Update</a>
             <a href="/delete/{{ todo.id }}">Delete</a>
-    {% endfor %}
+
+        {% endfor %}
+
 
 </body>
 </html>
