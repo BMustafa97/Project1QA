@@ -23,6 +23,7 @@ class Todo(db.Model):
 
     def __repr__(self):
         return f"Todo('{self.id}', '{self.task}')"
+db.create_all()
 
 @app.route("/")
 def home():
@@ -51,15 +52,14 @@ def update(Todo_id):
     db.session.commit()
     return redirect(url_for("home"))
 
-
 @app.route("/delete/<int:Todo_id>")
 def delete(Todo_id):
     task = Todo.query.filter_by(id=Todo_id).first()
     name = Name.query.all()
+    db.session.delete(name[-1])
     db.session.delete(task)
     db.session.commit()
     return redirect(url_for("home"))
 
 if __name__ == "__main__":
-    db.create_all()
     app.run(debug=True)
