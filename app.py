@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://billy:password17@localhost/todoapp'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -62,4 +62,5 @@ def delete(Todo_id):
     return redirect(url_for("home"))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    db.create_all()
+    app.run(port=5000, debug=True, host='0.0.0.0')
